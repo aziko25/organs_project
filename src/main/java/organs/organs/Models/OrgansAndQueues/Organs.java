@@ -25,7 +25,7 @@ public class Organs {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "organs")
+    /*@ManyToMany(mappedBy = "organs")
     @JsonBackReference
-    private Set<Hospitals> hospitals;
+    private Set<Hospitals> hospitals;*/
 }

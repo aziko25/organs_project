@@ -19,6 +19,8 @@ public class Queues {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "organ_id")
     private Organs organId;

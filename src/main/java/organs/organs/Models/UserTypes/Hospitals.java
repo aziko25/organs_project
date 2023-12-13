@@ -29,6 +29,17 @@ public class Hospitals {
     @Column(unique = true)
     private String name;
 
+    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "specialization_organ")
+    private Organs specializationOrgans;
+
+    private String description;
+
+    @Column(name = "image_link")
+    private String imageLink;
+
     @ManyToMany
     @JoinTable(
             name = "hospitals_patients",
@@ -38,12 +49,12 @@ public class Hospitals {
     @JsonManagedReference
     private Set<Patients> patients;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "hospitals_organs",
             joinColumns = @JoinColumn(name = "hospital_id"),
             inverseJoinColumns = @JoinColumn(name = "organ_id")
     )
     @JsonManagedReference
-    private Set<Organs> organs;
+    private Set<Organs> organs;*/
 }
