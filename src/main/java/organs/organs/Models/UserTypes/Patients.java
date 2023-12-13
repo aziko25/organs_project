@@ -50,6 +50,9 @@ public class Patients {
     @Column(name = "blood_type")
     private String bloodType;
 
+    @Column(name = "rh_factor")
+    private String rhFactor;
+
     @Column(name = "is_smoker")
     private Boolean isSmoker;
 
@@ -63,4 +66,9 @@ public class Patients {
     @ManyToMany(mappedBy = "patients")
     @JsonBackReference
     private Set<Hospitals> hospitals;
+
+    @Column(name = "urgency_rate")
+    private Integer urgencyRate;
+    private String diagnosis;
+    private String comments;
 }

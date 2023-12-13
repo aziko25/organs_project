@@ -48,6 +48,9 @@ public class Donors {
     @Column(name = "blood_type")
     private String bloodType;
 
+    @Column(name = "rh_factor")
+    private String rhFactor;
+
     @Column(name = "is_smoker")
     private Boolean isSmoker;
 
@@ -57,4 +60,10 @@ public class Donors {
     @ManyToOne
     @JoinColumn(name = "organ_donates")
     private Organs organDonates;
+
+    @Column(name = "donation_type")
+    private String donationType;
+
+    private String diagnosis;
+    private String comments;
 }
