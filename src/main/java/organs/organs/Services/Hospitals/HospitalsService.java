@@ -98,14 +98,14 @@ public class HospitalsService {
         return hospital.getPatients();
     }
 
-    public List<QueuesHospitalsPatients> allPatientsInTheQueue() {
+    public List<QueuesHospitalsPatients> allMyPatientsInTheQueue() {
 
         Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
 
         return queuesHospitalsPatientsRepository.findAllByHospitalId(hospital);
     }
 
-    public String appointTransportationOperation(String doctorName, String role, LocalDateTime time) {
+    public String appointTransportationOperationByTheQueue(String doctorName, String role, LocalDateTime time) {
 
         return null;
     }
