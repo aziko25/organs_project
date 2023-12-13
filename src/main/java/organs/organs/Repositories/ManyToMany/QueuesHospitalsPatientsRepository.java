@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatients;
 import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatientsId;
 import organs.organs.Models.UserTypes.Hospitals;
+import organs.organs.Models.UserTypes.Patients;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ import java.util.List;
 public interface QueuesHospitalsPatientsRepository extends JpaRepository<QueuesHospitalsPatients, QueuesHospitalsPatientsId> {
 
     List<QueuesHospitalsPatients> findAllByHospitalId(Hospitals hospital);
+
+    QueuesHospitalsPatients findFirstByHospitalId(Hospitals hospital);
+
+    QueuesHospitalsPatients findByHospitalIdAndPatientId(Hospitals hospitalId, Patients patientId);
 }

@@ -45,4 +45,7 @@ public class HospitalsOperations {
 
     @Column(name = "operation_time")
     private LocalDateTime operationTime;
+
+    @Column(name = "operation_is_successful")
+    private Boolean operationIsSuccessful;
 }

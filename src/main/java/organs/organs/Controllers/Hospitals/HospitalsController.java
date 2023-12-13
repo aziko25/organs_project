@@ -56,10 +56,43 @@ public class HospitalsController {
     }
 
     @Authorization(requiredRoles = {"HOSPITAL"})
-    @PostMapping("/appointOperationByTheQueue")
-    public ResponseEntity<?> appointOperation(@RequestParam String doctorName, @RequestParam String doctorRole,
-                                              @RequestParam LocalDateTime time) {
+    @GetMapping("/allMyOperations")
+    public ResponseEntity<?> allMyOperations() {
 
-        return new ResponseEntity<>(hospitalsService.appointTransportationOperationByTheQueue(doctorName, doctorRole, time), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalsService.allMyHospitalsOperations(), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PostMapping("/appointOperationByTheQueue")
+    public ResponseEntity<?> appointOperationByTheQueue(@RequestParam String doctorName, @RequestParam String doctorRole,
+                                              @RequestParam LocalDateTime time, @RequestParam int donorId) {
+
+        return new ResponseEntity<>(hospitalsService.appointTransportationOperationByTheQueue(doctorName, doctorRole, time, donorId), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PostMapping("/appointOperationToAnyPatient")
+    public ResponseEntity<?> appointOperationToAnyPatient(@RequestParam String doctorName, @RequestParam String doctorRole,
+                                              @RequestParam LocalDateTime time, @RequestParam int patientId, @RequestParam int donorId) {
+
+        return new ResponseEntity<>(hospitalsService.appointOperationToAnyPatient(doctorName, doctorRole, time, patientId, donorId), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PutMapping("/updateOperationProperties")
+    public ResponseEntity<?> updateOperationProperties(@RequestParam int operationId,
+                                                       @RequestParam(required = false) Boolean successful,
+                                                       @RequestParam(required = false) LocalDateTime operationTime,
+                                                       @RequestParam(required = false) String doctorName,
+                                                       @RequestParam(required = false) String doctorRole) {
+
+        return new ResponseEntity<>(hospitalsService.updateOperationProperties(operationId, successful, operationTime, doctorName, doctorRole), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @DeleteMapping("/cancelOperation")
+    public ResponseEntity<?> deleteOperation(@RequestParam int operationId) {
+
+        return new ResponseEntity<>(hospitalsService.cancelOperation(operationId), HttpStatus.OK);
     }
 }
