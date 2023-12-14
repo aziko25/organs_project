@@ -29,7 +29,7 @@ public class LoginService {
     public static String secretKeyString;
 
     public static Integer USER_ID;
-    public static String USERNAME;
+    public static String EMAIL;
     public static String ROLE;
     public static Users USER;
 
@@ -55,7 +55,7 @@ public class LoginService {
             Claims claims = Jwts.claims();
 
             claims.put("id", user.getId());
-            claims.put("username", user.getEmail());
+            claims.put("email", user.getEmail());
             claims.put("role", user.getRole());
             claims.put("user", user);
 
@@ -103,12 +103,12 @@ public class LoginService {
             Users user = mapper.convertValue(userMap, Users.class);
 
             result.put("id", claims.get("id"));
-            result.put("username", claims.get("username"));
+            result.put("email", claims.get("email"));
             result.put("role", claims.get("role"));
             result.put("user", user);
 
             USER_ID = (Integer) claims.get("id");
-            USERNAME = (String) claims.get("username");
+            EMAIL = (String) claims.get("email");
             ROLE = (String) claims.get("role");
             USER = user;
 

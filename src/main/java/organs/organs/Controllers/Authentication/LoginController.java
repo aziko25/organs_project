@@ -25,9 +25,9 @@ public class LoginController {
     public static HashMap<String, String> mapOfMailAndCodes = new HashMap<>();
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
 
-        return new ResponseEntity<>(loginService.login(username, password), HttpStatus.OK);
+        return new ResponseEntity<>(loginService.login(email, password), HttpStatus.OK);
     }
 
     @PostMapping("/resetPassword")
