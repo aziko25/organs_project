@@ -35,4 +35,25 @@ public class PatientsController {
 
         return new ResponseEntity<>(patientsService.allMyDispensaryVisits(), HttpStatus.OK);
     }
+
+    @Authorization(requiredRoles = {"PATIENT"})
+    @GetMapping("/allHospitalsMatchingMe")
+    public ResponseEntity<?> allHospitalsMatchingMe() {
+
+        return new ResponseEntity<>(patientsService.allHospitalsFilteredByMyNeededOrgan(), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"PATIENT"})
+    @PostMapping("/applyToHospital")
+    public ResponseEntity<?> applyToHospital(@RequestParam int hospitalId) {
+
+        return new ResponseEntity<>(patientsService.applyToHospital(hospitalId), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"PATIENT"})
+    @GetMapping("/allMyOperations")
+    public ResponseEntity<?> allMyOperations() {
+
+        return new ResponseEntity<>(patientsService.allMyOperations(), HttpStatus.OK);
+    }
 }

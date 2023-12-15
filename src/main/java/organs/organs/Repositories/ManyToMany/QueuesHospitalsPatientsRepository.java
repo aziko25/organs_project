@@ -17,4 +17,6 @@ public interface QueuesHospitalsPatientsRepository extends JpaRepository<QueuesH
     QueuesHospitalsPatients findFirstByHospitalId(Hospitals hospital);
 
     QueuesHospitalsPatients findByHospitalIdAndPatientId(Hospitals hospitalId, Patients patientId);
+
+    List<QueuesHospitalsPatients> findAllByPatientId(Patients patient);
 }

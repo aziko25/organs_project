@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryDonors;
 import organs.organs.Models.UserTypes.Dispensary;
 import organs.organs.Models.UserTypes.Donors;
-import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.ManyToMany.DispensaryDonorsRepository;
 import organs.organs.Repositories.UserTypes.DispensaryRepository;
 import organs.organs.Repositories.UserTypes.DonorsRepository;
-import organs.organs.Repositories.UserTypes.UsersRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +21,6 @@ import static organs.organs.Services.Authentication.LoginService.USER;
 @RequiredArgsConstructor
 public class DonorsService {
 
-    private final UsersRepository usersRepository;
     private final DonorsRepository donorsRepository;
     private final DispensaryRepository dispensaryRepository;
     private final DispensaryDonorsRepository dispensaryDonorsRepository;

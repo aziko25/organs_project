@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.UserTypes.UsersRepository;
@@ -17,7 +15,6 @@ import organs.organs.Repositories.UserTypes.UsersRepository;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -130,51 +127,5 @@ public class LoginService {
         }
 
         return true;
-    }
-
-    public static ResponseEntity<?> checkAuthorizationAndReturnResult(HttpServletRequest request,
-                                                                      List<String> requiredRoles,
-                                                                      Supplier<Object> resultSupplier) {
-
-        try {
-
-            if (isAuthorized(request, requiredRoles)) {
-
-                return new ResponseEntity<>("You Don't Have Rights!", HttpStatus.UNAUTHORIZED);
-            }
-            else {
-
-                Object result = resultSupplier.get();
-
-                if (result == null) {
-
-                    return new ResponseEntity<>("Nothing To Show", HttpStatus.OK);
-                }
-                else {
-
-                    return new ResponseEntity<>(result, HttpStatus.OK);
-                }
-            }
-        }
-        catch (IllegalArgumentException e) {
-
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e) {
-
-            return new ResponseEntity<>("JWT EXPIRED: " + e, HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    public static ResponseEntity<?> returnForResponseEntities(ResponseEntity<?> response) {
-
-        if (response.getBody() instanceof ResponseEntity) {
-
-            return (ResponseEntity<?>) response.getBody();
-        }
-        else {
-
-            return response;
-        }
     }
 }

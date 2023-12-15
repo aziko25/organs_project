@@ -3,15 +3,19 @@ package organs.organs.Services.Patients;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import organs.organs.Models.ManyToMany.Dispensary.DispensaryDonors;
+import org.springframework.transaction.annotation.Transactional;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryPatients;
+import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatients;
 import organs.organs.Models.UserTypes.Dispensary;
-import organs.organs.Models.UserTypes.Donors;
+import organs.organs.Models.UserTypes.Hospitals;
+import organs.organs.Models.UserTypes.HospitalsOperations;
 import organs.organs.Models.UserTypes.Patients;
 import organs.organs.Repositories.ManyToMany.DispensaryPatientsRepository;
+import organs.organs.Repositories.ManyToMany.QueuesHospitalsPatientsRepository;
 import organs.organs.Repositories.UserTypes.DispensaryRepository;
+import organs.organs.Repositories.UserTypes.HospitalsOperationsRepository;
+import organs.organs.Repositories.UserTypes.HospitalsRepository;
 import organs.organs.Repositories.UserTypes.PatientsRepository;
-import organs.organs.Repositories.UserTypes.UsersRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,10 +28,12 @@ import static organs.organs.Services.Authentication.LoginService.USER;
 @RequiredArgsConstructor
 public class PatientsService {
 
-    private final UsersRepository usersRepository;
     private final PatientsRepository patientsRepository;
     private final DispensaryPatientsRepository dispensaryPatientsRepository;
     private final DispensaryRepository dispensaryRepository;
+    private final HospitalsRepository hospitalsRepository;
+    private final QueuesHospitalsPatientsRepository queuesHospitalsPatientsRepository;
+    private final HospitalsOperationsRepository hospitalsOperationsRepository;
 
     public String becomePatient() {
 
@@ -92,5 +98,45 @@ public class PatientsService {
         Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor"));
 
         return dispensaryPatientsRepository.findAllByPatientId(patient);
+    }
+
+    public List<Hospitals> allHospitalsFilteredByMyNeededOrgan() {
+
+        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
+
+        return hospitalsRepository.findAllBySpecializationOrgans(patient.getOrganReceives());
+    }
+
+    @Transactional
+    public String applyToHospital(int hospitalId) {
+
+        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
+        Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found!"));
+
+        hospital.getPatients().add(patient);
+
+        hospitalsRepository.save(hospital);
+
+        QueuesHospitalsPatients existingQueuesHospitalsPatients = queuesHospitalsPatientsRepository.findFirstByHospitalId(hospital);
+
+        if (existingQueuesHospitalsPatients == null) {
+
+            throw new IllegalArgumentException("This Hospital Didn't Create The Queue For Its Organs Yet!");
+        }
+
+        QueuesHospitalsPatients queuesHospitalsPatients = new QueuesHospitalsPatients();
+
+        queuesHospitalsPatients.setHospitalId(hospital);
+        queuesHospitalsPatients.setPatientId(patient);
+        queuesHospitalsPatients.setQueueId(existingQueuesHospitalsPatients.getQueueId());
+
+        return "You Successfully Applied To " + hospital.getName();
+    }
+
+    public List<HospitalsOperations> allMyOperations() {
+
+        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
+
+        return hospitalsOperationsRepository.findAllByPatientId(patient);
     }
 }

@@ -20,7 +20,6 @@ import organs.organs.Repositories.OrgansAndQueues.QueuesRepository;
 import organs.organs.Repositories.UserTypes.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +30,6 @@ import static organs.organs.Services.Authentication.LoginService.USER;
 @RequiredArgsConstructor
 public class HospitalsService {
 
-    private final UsersRepository usersRepository;
     private final DonorsRepository donorsRepository;
     private final PatientsRepository patientsRepository;
     private final HospitalsRepository hospitalsRepository;
@@ -158,6 +156,10 @@ public class HospitalsService {
         hospitalsOperations.setOperationTime(time);
 
         hospitalsOperationsRepository.save(hospitalsOperations);
+
+        List<QueuesHospitalsPatients> allPatientsInTheQueues = queuesHospitalsPatientsRepository.findAllByPatientId(queuesHospitalsPatients.getPatientId());
+
+        queuesHospitalsPatientsRepository.deleteAll(allPatientsInTheQueues);
 
         return "You Successfully Appointed Operation To " + time;
     }
