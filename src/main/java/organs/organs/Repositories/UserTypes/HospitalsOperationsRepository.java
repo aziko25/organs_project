@@ -2,6 +2,7 @@ package organs.organs.Repositories.UserTypes;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import organs.organs.Models.UserTypes.Donors;
 import organs.organs.Models.UserTypes.Hospitals;
 import organs.organs.Models.UserTypes.HospitalsOperations;
 import organs.organs.Models.UserTypes.Patients;
@@ -14,4 +15,6 @@ public interface HospitalsOperationsRepository extends JpaRepository<HospitalsOp
     List<HospitalsOperations> findAllByHospitalId(Hospitals hospital);
 
     List<HospitalsOperations> findAllByPatientId(Patients patient);
+
+    List<HospitalsOperations> findAllByDonorId(Donors donor);
 }

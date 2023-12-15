@@ -113,6 +113,11 @@ public class PatientsService {
         Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
         Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found!"));
 
+        if (hospital.getPatients().contains(patient)) {
+
+            throw new IllegalArgumentException("You Have Already Applied To This Hospital!");
+        }
+
         hospital.getPatients().add(patient);
 
         hospitalsRepository.save(hospital);

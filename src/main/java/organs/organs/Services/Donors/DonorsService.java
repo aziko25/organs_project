@@ -3,12 +3,19 @@ package organs.organs.Services.Donors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryDonors;
+import organs.organs.Models.ManyToMany.HospitalsDonorsOrgans.HospitalsDonorsOrgans;
 import organs.organs.Models.UserTypes.Dispensary;
 import organs.organs.Models.UserTypes.Donors;
+import organs.organs.Models.UserTypes.Hospitals;
+import organs.organs.Models.UserTypes.HospitalsOperations;
 import organs.organs.Repositories.ManyToMany.DispensaryDonorsRepository;
+import organs.organs.Repositories.ManyToMany.HospitalsDonorsOrgansRepository;
 import organs.organs.Repositories.UserTypes.DispensaryRepository;
 import organs.organs.Repositories.UserTypes.DonorsRepository;
+import organs.organs.Repositories.UserTypes.HospitalsOperationsRepository;
+import organs.organs.Repositories.UserTypes.HospitalsRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +31,9 @@ public class DonorsService {
     private final DonorsRepository donorsRepository;
     private final DispensaryRepository dispensaryRepository;
     private final DispensaryDonorsRepository dispensaryDonorsRepository;
+    private final HospitalsRepository hospitalsRepository;
+    private final HospitalsDonorsOrgansRepository hospitalsDonorsOrgansRepository;
+    private final HospitalsOperationsRepository hospitalsOperationsRepository;
 
     public String becomeDonor() {
 
@@ -88,5 +98,60 @@ public class DonorsService {
         Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor"));
 
         return dispensaryDonorsRepository.findAllByDonorId(donor);
+    }
+
+    public List<Hospitals> allHospitalsFilteredByMyDonatingOrgan() {
+
+        Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor Yet!"));
+
+        return hospitalsRepository.findAllBySpecializationOrgans(donor.getOrganDonates());
+    }
+
+    @Transactional
+    public String applyToHospital(int hospitalId) {
+
+        Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor Yet!"));
+        Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found!"));
+
+        try {
+
+            HospitalsDonorsOrgans hospitalsDonorsOrgans = new HospitalsDonorsOrgans();
+
+            hospitalsDonorsOrgans.setHospitalId(hospital);
+            hospitalsDonorsOrgans.setDonorId(donor);
+            hospitalsDonorsOrgans.setOrganId(donor.getOrganDonates());
+
+            hospitalsDonorsOrgansRepository.save(hospitalsDonorsOrgans);
+        }
+        catch (DataIntegrityViolationException e) {
+
+            throw new IllegalArgumentException("You Are Already A Donor Here!");
+        }
+
+        return "You Successfully Applied To " + hospital.getName() + " As Donor!";
+    }
+
+    public String acceptOrRejectOperation(int operationId, boolean decision) {
+
+        HospitalsOperations hospitalsOperations = hospitalsOperationsRepository.findById(operationId).orElseThrow(() -> new IllegalArgumentException("Operation Not Found"));
+        Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor!"));
+
+        if (donor != hospitalsOperations.getDonorId()) {
+
+            throw new IllegalArgumentException("This Operation Is Not Related To You!");
+        }
+
+        hospitalsOperations.setIsDonorAccepted(decision);
+
+        hospitalsOperationsRepository.save(hospitalsOperations);
+
+        return "You Successfully Sent Your Decision!";
+    }
+
+    public List<HospitalsOperations> allMyOperations() {
+
+        Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
+
+        return hospitalsOperationsRepository.findAllByDonorId(donor);
     }
 }

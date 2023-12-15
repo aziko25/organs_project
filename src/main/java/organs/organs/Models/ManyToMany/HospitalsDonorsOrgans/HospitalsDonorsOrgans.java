@@ -20,16 +20,16 @@ public class HospitalsDonorsOrgans {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", unique = true)
     private Hospitals hospitalId;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "donor_id")
+    @JoinColumn(name = "donor_id", unique = true)
     private Donors donorId;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "organ_id")
+    @JoinColumn(name = "organ_id", unique = true)
     private Organs organId;
 }
