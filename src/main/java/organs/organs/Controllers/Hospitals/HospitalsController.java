@@ -19,6 +19,23 @@ public class HospitalsController {
     private final HospitalsService hospitalsService;
 
     @Authorization(requiredRoles = {"HOSPITAL"})
+    @GetMapping("/myHospitalInfo")
+    public ResponseEntity<?> myHospitalInfo() {
+
+        return new ResponseEntity<>(hospitalsService.myHospitalInfo(), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PutMapping("/updateMyHospitalInfo")
+    public ResponseEntity<?> updateMyHospitalInfo(@RequestParam(required = false) String name,
+                                                  @RequestParam(required = false) String address,
+                                                  @RequestParam(required = false) String description,
+                                                  @RequestParam(value = "photo", required = false) MultipartFile multipartFile) {
+
+        return new ResponseEntity<>(hospitalsService.updateMyHospitalInfo(name, address, description, multipartFile), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
     @PostMapping("/create")
     public ResponseEntity<?> createHospital(@RequestParam String name, @RequestParam String address,
                                             @RequestParam int specializationOrgan, @RequestParam String description,

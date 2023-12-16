@@ -1,5 +1,6 @@
 package organs.organs.Models.UserTypes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class HospitalsOperations {
     @Column(name = "doctor_specialization")
     private String doctorSpecialization;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "operation_time")
     private LocalDateTime operationTime;
 

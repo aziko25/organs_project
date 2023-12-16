@@ -19,6 +19,13 @@ public class DispensaryController {
     private final DispensaryService dispensaryService;
 
     @Authorization(requiredRoles = {"DISPENSARY"})
+    @GetMapping("/myDispensaryInfo")
+    public ResponseEntity<?> myDispensaryInfo() {
+
+        return new ResponseEntity<>(dispensaryService.myDispensaryInfo(), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"DISPENSARY"})
     @GetMapping("/allDispensaryDonors")
     public ResponseEntity<?> allDispensaryDonors() {
 
@@ -50,16 +57,16 @@ public class DispensaryController {
     @PutMapping("/fillInDonorMedicalCard")
     public ResponseEntity<?> fillInDonorMedicalCard(@RequestParam int donorId, @RequestParam String address,
                                                     @RequestParam String city, @RequestParam String passportNumber,
-                                                    @RequestParam String pinfl, @RequestParam String donationType,
+                                                    @RequestParam String pinfl, @RequestParam Double donationPrice,
                                                     @RequestParam LocalDate birthday, @RequestParam String bloodType,
                                                     @RequestParam String district, @RequestParam String rhFactor,
-                                                    @RequestParam String diagnosis, @RequestParam String comments,
-                                                    @RequestParam Boolean isApproved) {
+                                                    @RequestParam int organDonates,
+                                                    @RequestParam String comments, @RequestParam Boolean isApproved) {
 
         return new ResponseEntity<>(dispensaryService.fillInDonorsMedicalCard(donorId,address, city,
-                                                                              passportNumber, pinfl, donationType,
+                                                                              passportNumber, pinfl, donationPrice,
                                                                               birthday, bloodType, district,
-                                                                              rhFactor, diagnosis, comments, isApproved), HttpStatus.OK);
+                                                                              rhFactor, organDonates, comments, isApproved), HttpStatus.OK);
     }
 
     @Authorization(requiredRoles = {"DISPENSARY"})
@@ -69,12 +76,13 @@ public class DispensaryController {
                                                       @RequestParam String pinfl, @RequestParam Integer urgencyRate,
                                                       @RequestParam LocalDate birthday, @RequestParam String bloodType,
                                                       @RequestParam String district, @RequestParam String rhFactor,
+                                                      @RequestParam int organReceives,
                                                       @RequestParam String diagnosis, @RequestParam String comments,
                                                       @RequestParam Boolean isApproved) {
 
         return new ResponseEntity<>(dispensaryService.fillInPatientsMedicalCard(patientId, address, city,
                                                                                 passportNumber, pinfl, urgencyRate, birthday,
-                                                                                bloodType, district, rhFactor,
+                                                                                bloodType, district, rhFactor, organReceives,
                                                                                 diagnosis, comments, isApproved), HttpStatus.OK);
     }
 }

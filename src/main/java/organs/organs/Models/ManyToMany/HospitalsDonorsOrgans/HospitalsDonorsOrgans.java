@@ -32,4 +32,6 @@ public class HospitalsDonorsOrgans {
     @ManyToOne
     @JoinColumn(name = "organ_id", unique = true)
     private Organs organId;
+
+    private Double price;
 }

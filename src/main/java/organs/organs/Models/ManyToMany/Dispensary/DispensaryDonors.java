@@ -1,5 +1,6 @@
 package organs.organs.Models.ManyToMany.Dispensary;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,18 +17,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "dispensary_donors")
-@IdClass(DispensaryDonorsId.class)
+//@IdClass(DispensaryDonorsId.class)
 public class DispensaryDonors {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "dispensary_id")
     private Dispensary dispensaryId;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "donor_id")
     private Donors donorId;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime date;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
 }

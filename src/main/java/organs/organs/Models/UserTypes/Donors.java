@@ -1,5 +1,6 @@
 package organs.organs.Models.UserTypes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,12 +30,19 @@ public class Donors {
     private String phoneNumber;
 
     private String address;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+
     private String city;
     private String district;
 
     @Column(name = "last_donated")
     private LocalDate lastDonated;
+
+    @ManyToOne
+    @JoinColumn(name = "organ_donates")
+    private Organs organDonates;
 
     @Column(name = "passport_number", unique = true)
     private String passportNumber;
@@ -57,13 +65,8 @@ public class Donors {
     @Column(name = "is_drinker")
     private Boolean isDrinker;
 
-    @ManyToOne
-    @JoinColumn(name = "organ_donates")
-    private Organs organDonates;
+    @Column(name = "donation_price")
+    private Double donationPrice;
 
-    @Column(name = "donation_type")
-    private String donationType;
-
-    private String diagnosis;
     private String comments;
 }

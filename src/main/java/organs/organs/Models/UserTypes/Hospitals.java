@@ -48,13 +48,4 @@ public class Hospitals {
     )
     @JsonManagedReference
     private Set<Patients> patients;
-
-    /*@ManyToMany
-    @JoinTable(
-            name = "hospitals_organs",
-            joinColumns = @JoinColumn(name = "hospital_id"),
-            inverseJoinColumns = @JoinColumn(name = "organ_id")
-    )
-    @JsonManagedReference
-    private Set<Organs> organs;*/
 }

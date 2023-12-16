@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import organs.organs.Models.OrgansAndQueues.Organs;
+import organs.organs.Models.UserTypes.Hospitals;
 
 @Getter
 @Setter
@@ -24,4 +25,8 @@ public class Queues {
     @ManyToOne
     @JoinColumn(name = "organ_id")
     private Organs organId;
+
+    @OneToOne
+    @JoinColumn(name = "hospital_id", unique = true)
+    private Hospitals hospitalId;
 }

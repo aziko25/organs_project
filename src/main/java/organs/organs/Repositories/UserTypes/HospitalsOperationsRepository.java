@@ -8,6 +8,7 @@ import organs.organs.Models.UserTypes.HospitalsOperations;
 import organs.organs.Models.UserTypes.Patients;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HospitalsOperationsRepository extends JpaRepository<HospitalsOperations, Integer> {
@@ -17,4 +18,8 @@ public interface HospitalsOperationsRepository extends JpaRepository<HospitalsOp
     List<HospitalsOperations> findAllByPatientId(Patients patient);
 
     List<HospitalsOperations> findAllByDonorId(Donors donor);
+
+    Optional<HospitalsOperations> findByIdAndHospitalId(Integer id, Hospitals hospitalId);
+
+    Optional<HospitalsOperations> findByIdAndDonorId(Integer id, Donors donorId);
 }

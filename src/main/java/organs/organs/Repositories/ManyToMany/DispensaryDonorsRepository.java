@@ -10,8 +10,10 @@ import organs.organs.Models.UserTypes.Donors;
 import java.util.List;
 
 @Repository
-public interface DispensaryDonorsRepository extends JpaRepository<DispensaryDonors, DispensaryDonorsId> {
+public interface DispensaryDonorsRepository extends JpaRepository<DispensaryDonors, Integer> {
 
     List<DispensaryDonors> findAllByDonorIdAndDispensaryId(Donors donor, Dispensary dispensary);
     List<DispensaryDonors> findAllByDonorId(Donors donor);
+
+    DispensaryDonors findByDonorIdAndIsActive(Donors donor, boolean b);
 }

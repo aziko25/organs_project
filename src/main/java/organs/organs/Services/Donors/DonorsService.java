@@ -35,29 +35,16 @@ public class DonorsService {
     private final HospitalsDonorsOrgansRepository hospitalsDonorsOrgansRepository;
     private final HospitalsOperationsRepository hospitalsOperationsRepository;
 
-    public String becomeDonor() {
+    public Donors myDonorInfo() {
 
-        try {
-
-            Donors donor = new Donors();
-
-            donor.setUserId(USER);
-
-            donorsRepository.save(donor);
-
-            return "You Successfully Became Donor!";
-        }
-        catch (DataIntegrityViolationException e) {
-
-            throw new IllegalArgumentException("You Are Already A Donor!");
-        }
+        return donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor!"));
     }
 
     public String applyToDispensary(int dispensaryId, String phoneNumber) {
 
         Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor!"));
 
-        Pattern pattern = Pattern.compile("^(\\+)?998[35789]\\d{8}$");
+        Pattern pattern = Pattern.compile("^(\\+)?998[123456789]\\d{8}$");
         Matcher matcher = pattern.matcher(phoneNumber);
 
         if (matcher.matches()) {
@@ -72,20 +59,25 @@ public class DonorsService {
         Dispensary dispensary = dispensaryRepository.findById(dispensaryId).orElseThrow(() -> new IllegalArgumentException("Dispensary Not Found"));
 
         List<DispensaryDonors> dispensaryDonorsList = dispensaryDonorsRepository.findAllByDonorIdAndDispensaryId(donor, dispensary);
-        DispensaryDonors lastDispensaryDonor = dispensaryDonorsList.get(dispensaryDonorsList.size() - 1);
 
-        LocalDateTime now = LocalDateTime.now();
+        if (dispensaryDonorsList != null && !dispensaryDonorsList.isEmpty()) {
 
-        if (!dispensaryDonorsList.isEmpty() && (lastDispensaryDonor.getDate() == null ||
-                now.isBefore(lastDispensaryDonor.getDate()))) {
+            DispensaryDonors lastDispensaryDonor = dispensaryDonorsList.get(dispensaryDonorsList.size() - 1);
 
-            throw new IllegalArgumentException("You Already Have An Appointment In This Dispensary!");
+            LocalDateTime now = LocalDateTime.now();
+
+            if (!dispensaryDonorsList.isEmpty() && (lastDispensaryDonor.getDate() == null ||
+                    now.isBefore(lastDispensaryDonor.getDate()))) {
+
+                throw new IllegalArgumentException("You Already Have An Appointment In This Dispensary!");
+            }
         }
 
         DispensaryDonors dispensaryDonors = new DispensaryDonors();
 
         dispensaryDonors.setDonorId(donor);
         dispensaryDonors.setDispensaryId(dispensary);
+        dispensaryDonors.setIsActive(true);
 
         dispensaryDonorsRepository.save(dispensaryDonors);
         donorsRepository.save(donor);
@@ -111,7 +103,7 @@ public class DonorsService {
     public String applyToHospital(int hospitalId) {
 
         Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor Yet!"));
-        Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found!"));
+        Hospitals hospital = hospitalsRepository.findByIdAndSpecializationOrgans(hospitalId, donor.getOrganDonates()).orElseThrow(() -> new IllegalArgumentException("This Hospital Does Not Support Your Organ!"));
 
         try {
 
@@ -120,6 +112,7 @@ public class DonorsService {
             hospitalsDonorsOrgans.setHospitalId(hospital);
             hospitalsDonorsOrgans.setDonorId(donor);
             hospitalsDonorsOrgans.setOrganId(donor.getOrganDonates());
+            hospitalsDonorsOrgans.setPrice(donor.getDonationPrice());
 
             hospitalsDonorsOrgansRepository.save(hospitalsDonorsOrgans);
         }

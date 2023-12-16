@@ -17,4 +17,6 @@ public interface HospitalsRepository extends JpaRepository<Hospitals, Integer> {
     Optional<Hospitals> findByCreatorId(Users user);
 
     List<Hospitals> findAllBySpecializationOrgans(Organs specializationOrgans);
+
+    Optional<Hospitals> findByIdAndSpecializationOrgans(Integer id, Organs specializationOrgans);
 }

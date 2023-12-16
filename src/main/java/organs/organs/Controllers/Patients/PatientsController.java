@@ -15,42 +15,42 @@ public class PatientsController {
 
     private final PatientsService patientsService;
 
-    @Authorization(requiredRoles = {"PATIENT"})
-    @PostMapping("/becomePatient")
-    public ResponseEntity<?> becomePatient() {
+    @Authorization(requiredRoles = {"PATIENT", "APPROVED_PATIENT"})
+    @GetMapping("/myInfo")
+    public ResponseEntity<?> myPatientInfo() {
 
-        return new ResponseEntity<>(patientsService.becomePatient(), HttpStatus.OK);
+        return new ResponseEntity<>(patientsService.myPatientInfo(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"PATIENT"})
+    @Authorization(requiredRoles = {"PATIENT", "APPROVED_PATIENT"})
     @PostMapping("/applyToDispensary")
     public ResponseEntity<?> applyToDispensary(@RequestParam int dispensaryId, @RequestParam String phone) {
 
         return new ResponseEntity<>(patientsService.applyToDispensary(dispensaryId, phone), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"PATIENT"})
+    @Authorization(requiredRoles = {"PATIENT", "APPROVED_PATIENT"})
     @GetMapping("/allMyDispensaryVisits")
     public ResponseEntity<?> allMyDispensaryVisits() {
 
         return new ResponseEntity<>(patientsService.allMyDispensaryVisits(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"PATIENT"})
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
     @GetMapping("/allHospitalsMatchingMe")
     public ResponseEntity<?> allHospitalsMatchingMe() {
 
         return new ResponseEntity<>(patientsService.allHospitalsFilteredByMyNeededOrgan(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"PATIENT"})
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
     @PostMapping("/applyToHospital")
     public ResponseEntity<?> applyToHospital(@RequestParam int hospitalId) {
 
         return new ResponseEntity<>(patientsService.applyToHospital(hospitalId), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"PATIENT"})
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
     @GetMapping("/allMyOperations")
     public ResponseEntity<?> allMyOperations() {
 
