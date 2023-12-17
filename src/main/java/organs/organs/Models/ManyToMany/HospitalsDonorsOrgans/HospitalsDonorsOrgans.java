@@ -14,7 +14,7 @@ import organs.organs.Models.UserTypes.Hospitals;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "hospitals_donors_organs")
+@Table(schema = "public", name = "hospitals_donors_organs")
 @IdClass(HospitalsDonorsOrgansId.class)
 public class HospitalsDonorsOrgans {
 

@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(schema = "public", name = "dispensary_patients")
-//@IdClass(DispensaryPatientsId.class)
 public class DispensaryPatients {
 
     @Id

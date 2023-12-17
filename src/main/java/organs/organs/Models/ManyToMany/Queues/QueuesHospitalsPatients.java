@@ -11,7 +11,7 @@ import organs.organs.Models.UserTypes.Patients;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "queues_hospitals_patients")
+@Table(schema = "public", name = "queues_hospitals_patients")
 @IdClass(QueuesHospitalsPatientsId.class)
 public class QueuesHospitalsPatients {
 

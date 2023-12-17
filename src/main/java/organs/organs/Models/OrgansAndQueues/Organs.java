@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "organs")
+@Table(schema = "public", name = "organs")
 public class Organs {
 
     @Id

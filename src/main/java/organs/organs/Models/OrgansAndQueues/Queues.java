@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import organs.organs.Models.OrgansAndQueues.Organs;
 import organs.organs.Models.UserTypes.Hospitals;
 
 @Getter
@@ -13,7 +12,7 @@ import organs.organs.Models.UserTypes.Hospitals;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "queues")
+@Table(schema = "public", name = "queues")
 public class Queues {
 
     @Id
