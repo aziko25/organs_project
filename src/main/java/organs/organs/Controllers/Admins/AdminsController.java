@@ -54,7 +54,7 @@ public class AdminsController {
     }
 
     @Authorization(requiredRoles = {"ADMIN"})
-    @PostMapping("/dispensary/create")
+    @PostMapping("/dispensary/createDispensary")
     public ResponseEntity<?> createDispensary(@RequestParam String name) {
 
         return new ResponseEntity<>(adminsDispensaryService.createDispensary(name), HttpStatus.OK);
