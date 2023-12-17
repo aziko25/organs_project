@@ -26,4 +26,7 @@ public class Users {
 
     @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "image_link")
+    private String imageLink;
 }

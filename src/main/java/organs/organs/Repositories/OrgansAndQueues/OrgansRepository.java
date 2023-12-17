@@ -6,4 +6,6 @@ import organs.organs.Models.OrgansAndQueues.Organs;
 
 @Repository
 public interface OrgansRepository extends JpaRepository<Organs, Integer> {
+
+    Organs findByName(String name);
 }

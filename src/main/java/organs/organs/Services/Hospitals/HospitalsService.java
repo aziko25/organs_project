@@ -68,7 +68,7 @@ public class HospitalsService {
 
         if (photo != null && !photo.isEmpty()) {
 
-            String fileName = handleFileUploadForHospitals(name, photo);
+            String fileName = handleFileUpload(name, photo);
             hospital.setImageLink(fileName);
         }
 
@@ -98,7 +98,7 @@ public class HospitalsService {
             hospital.setDescription(description);
             hospital.setCreatorId(USER);
 
-            String fileName = handleFileUploadForHospitals(name, photo);
+            String fileName = handleFileUpload(name, photo);
             hospital.setImageLink(fileName);
 
             hospitalsRepository.save(hospital);
@@ -273,7 +273,7 @@ public class HospitalsService {
         return hospitalsDonorsOrgansRepository.findAllByHospitalId(hospital);
     }
 
-    private String handleFileUploadForHospitals(String hospitalName, MultipartFile multipartFile) {
+    public static String handleFileUpload(String name, MultipartFile multipartFile) {
 
         if (multipartFile.isEmpty()) {
 
@@ -290,7 +290,7 @@ public class HospitalsService {
             throw new IllegalArgumentException("Invalid file type! Please upload a .png, .heic, .jpg, or .jpeg file.");
         }
 
-        String fileName = hospitalName + "_avatar" + fileExtension;
+        String fileName = name + "_avatar" + fileExtension;
         String uploadDir = "/var/www/images";
 
         try {

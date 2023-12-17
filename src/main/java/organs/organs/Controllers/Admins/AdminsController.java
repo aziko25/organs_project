@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import organs.organs.Configurations.JWTAuthorization.Authorization;
-import organs.organs.Services.Admins.AdminsDispensaryService;
-import organs.organs.Services.Admins.AdminsDonorsService;
-import organs.organs.Services.Admins.AdminsHospitalsService;
-import organs.organs.Services.Admins.AdminsPatientsService;
+import organs.organs.Services.Admins.*;
 
 import java.time.LocalDate;
 
@@ -22,6 +19,30 @@ public class AdminsController {
     private final AdminsHospitalsService adminsHospitalsService;
     private final AdminsDonorsService adminsDonorsService;
     private final AdminsPatientsService adminsPatientsService;
+    private final AdminsOrgansService adminsOrgansService;
+
+    // ORGANS
+
+    @Authorization(requiredRoles = {"ADMIN"})
+    @GetMapping("/organs/allOrgans")
+    public ResponseEntity<?> allOrgans() {
+
+        return ResponseEntity.ok(adminsOrgansService.allOrgans());
+    }
+
+    @Authorization(requiredRoles = {"ADMIN"})
+    @PostMapping("/organs/createOrgan")
+    public ResponseEntity<?> createOrgan(@RequestParam String name) {
+
+        return ResponseEntity.ok(adminsOrgansService.createOrgan(name));
+    }
+
+    @Authorization(requiredRoles = {"ADMIN"})
+    @PutMapping("/organs/updateOrgan")
+    public ResponseEntity<?> updateOrgan(@RequestParam int organId, @RequestParam(required = false) String name) {
+
+        return ResponseEntity.ok(adminsOrgansService.updateOrgan(organId, name));
+    }
 
     // DISPENSARY
 
@@ -65,7 +86,7 @@ public class AdminsController {
 
     @Authorization(requiredRoles = {"ADMIN"})
     @PutMapping("/hospitals/updateHospital")
-    public ResponseEntity<?> updateHospital(@RequestParam int hospitalId, @RequestParam String name, @RequestParam String address) {
+    public ResponseEntity<?> updateHospital(@RequestParam int hospitalId, @RequestParam(required = false) String name, @RequestParam(required = false) String address) {
 
         return new ResponseEntity<>(adminsHospitalsService.updateHospital(hospitalId, name, address), HttpStatus.OK);
     }
@@ -88,11 +109,11 @@ public class AdminsController {
 
     @Authorization(requiredRoles = {"ADMIN"})
     @PutMapping("/donors/updateDonor")
-    public ResponseEntity<?> updateDonor(@RequestParam int donorId, @RequestParam String address,
-                                         @RequestParam String city, @RequestParam Double donationPrice,
-                                         @RequestParam LocalDate birthday, @RequestParam String bloodType,
-                                         @RequestParam String district, @RequestParam String rhFactor,
-                                         @RequestParam String comments) {
+    public ResponseEntity<?> updateDonor(@RequestParam int donorId, @RequestParam(required = false) String address,
+                                         @RequestParam(required = false) String city, @RequestParam(required = false) Double donationPrice,
+                                         @RequestParam(required = false) LocalDate birthday, @RequestParam(required = false) String bloodType,
+                                         @RequestParam(required = false) String district, @RequestParam(required = false) String rhFactor,
+                                         @RequestParam(required = false) String comments) {
 
         return ResponseEntity.ok(adminsDonorsService.updateDonorsInfo(donorId, address, city, donationPrice, birthday, bloodType, district, rhFactor, comments));
     }
@@ -115,11 +136,13 @@ public class AdminsController {
 
     @Authorization(requiredRoles = {"ADMIN"})
     @PutMapping("/patients/updatePatient")
-    public ResponseEntity<?> updatePatient(@RequestParam int patientId, @RequestParam String address,
-                                           @RequestParam String city,
-                                           @RequestParam LocalDate birthday, @RequestParam String bloodType,
-                                           @RequestParam String district, @RequestParam String rhFactor,
-                                           @RequestParam String comments) {
+    public ResponseEntity<?> updatePatient(@RequestParam int patientId, @RequestParam(required = false) String address,
+                                           @RequestParam(required = false) String city,
+                                           @RequestParam(required = false) LocalDate birthday,
+                                           @RequestParam(required = false) String bloodType,
+                                           @RequestParam(required = false) String district,
+                                           @RequestParam(required = false) String rhFactor,
+                                           @RequestParam(required = false) String comments) {
 
         return ResponseEntity.ok(adminsPatientsService.updatePatientsInfo(patientId, address, city, birthday, bloodType, district, rhFactor, comments));
     }
