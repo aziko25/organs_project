@@ -43,6 +43,20 @@ public class DispensaryService {
         return dispensaryRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Dispensary"));
     }
 
+    public String updateDispensaryInfo(String name) {
+
+        Dispensary dispensary = dispensaryRepository.findById(1).orElseThrow();
+
+        if (name != null) {
+
+            dispensary.setName(name);
+        }
+
+        dispensaryRepository.save(dispensary);
+
+        return "You Successfully Updated Dispensary Name To " + name;
+    }
+
     public List<DispensaryDonors> allDispensaryDonors() {
 
         return dispensaryDonorsRepository.findAll(Sort.by("date"));

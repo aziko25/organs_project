@@ -20,7 +20,7 @@ public class MeController {
 
     private final UsersRepository usersRepository;
 
-    @Authorization(requiredRoles = {"DISPENSARY", "HOSPITAL", "PATIENT", "DONOR"})
+    @Authorization(requiredRoles = {"DISPENSARY", "HOSPITAL", "PATIENT", "DONOR", "ADMIN"})
     @GetMapping
     public ResponseEntity<?> myInfo() {
 

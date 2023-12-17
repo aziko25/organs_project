@@ -17,6 +17,7 @@ import organs.organs.Repositories.UserTypes.DonorsRepository;
 import organs.organs.Repositories.UserTypes.HospitalsOperationsRepository;
 import organs.organs.Repositories.UserTypes.HospitalsRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;

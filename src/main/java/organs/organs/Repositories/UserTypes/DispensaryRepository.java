@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface DispensaryRepository extends JpaRepository<Dispensary, Integer> {
 
     Optional<Dispensary> findByCreatorId(Users user);
+
+    Dispensary findByName(String name);
 }

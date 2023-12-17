@@ -25,35 +25,42 @@ public class DispensaryController {
         return new ResponseEntity<>(dispensaryService.myDispensaryInfo(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
+    @PutMapping("/updateMyDispensaryInfo")
+    public ResponseEntity<?> updateMyDispensaryInfo(@RequestParam(required = false) String name) {
+
+        return new ResponseEntity<>(dispensaryService.updateDispensaryInfo(name), HttpStatus.OK);
+    }
+
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @GetMapping("/allDispensaryDonors")
     public ResponseEntity<?> allDispensaryDonors() {
 
         return new ResponseEntity<>(dispensaryService.allDispensaryDonors(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @GetMapping("/allDispensaryPatients")
     public ResponseEntity<?> allDispensaryPatients() {
 
         return new ResponseEntity<>(dispensaryService.allDispensaryPatients(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @PostMapping("/assignDateForDonorsAppointment")
     public ResponseEntity<?> assignDateForDonorsAppointment(@RequestParam int donorId, @RequestParam LocalDateTime time) {
 
         return new ResponseEntity<>(dispensaryService.assignForAppointmentDonor(donorId, time), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @PostMapping("/assignDateForPatientsAppointment")
     public ResponseEntity<?> assignDateForPatientsAppointment(@RequestParam int patientId, @RequestParam LocalDateTime time) {
 
         return new ResponseEntity<>(dispensaryService.assignForAppointmentPatient(patientId, time), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @PutMapping("/fillInDonorMedicalCard")
     public ResponseEntity<?> fillInDonorMedicalCard(@RequestParam int donorId, @RequestParam String address,
                                                     @RequestParam String city, @RequestParam String passportNumber,
@@ -69,7 +76,7 @@ public class DispensaryController {
                                                                               rhFactor, organDonates, comments, isApproved), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @PutMapping("/fillInPatientMedicalCard")
     public ResponseEntity<?> fillInPatientMedicalCard(@RequestParam int patientId, @RequestParam String address,
                                                       @RequestParam String city, @RequestParam String passportNumber,
