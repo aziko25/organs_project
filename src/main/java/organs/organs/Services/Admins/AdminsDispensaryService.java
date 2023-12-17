@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import organs.organs.Models.UserTypes.Dispensary;
+import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.UserTypes.DispensaryRepository;
-import organs.organs.Services.Dispensary.DispensaryService;
 
 import java.util.List;
-
-import static organs.organs.Services.Authentication.LoginService.USER;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +29,21 @@ public class AdminsDispensaryService {
             throw new IllegalArgumentException("Dispensary With This Name Already Exists!");
         }
 
+        Users user = new Users();
+
+        user.setFullName("Dispensary's Owner");
+        user.setPassword(name);
+        user.setRole("DISPENSARY");
+        user.setEmail(name + "@mail.ru");
+
         dispensary = new Dispensary();
 
         dispensary.setName(name);
-        dispensary.setCreatorId(USER);
+        dispensary.setCreatorId(user);
 
         dispensaryRepository.save(dispensary);
 
-        return "You Successfully Created Dispensary!";
+        return "You Successfully Created Dispensary! \nDispensaries Details:\nEmail: " + user.getEmail() + "\nPassword: " + user.getPassword();
     }
 
     public String updateDispensary(int dispensaryId, String name) {

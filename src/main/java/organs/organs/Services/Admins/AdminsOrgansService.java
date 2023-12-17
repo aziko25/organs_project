@@ -25,7 +25,7 @@ public class AdminsOrgansService {
 
         if (organ != null) {
 
-            throw new IllegalArgumentException("Organ Not Found!");
+            throw new IllegalArgumentException("Organ Already Exists!");
         }
 
         organ = new Organs();
@@ -34,7 +34,7 @@ public class AdminsOrgansService {
 
         organsRepository.save(organ);
 
-        return "You Successfully Created " + organ;
+        return "You Successfully Created " + organ.getName();
     }
 
     public String updateOrgan(int organId, String name) {

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import organs.organs.Models.OrgansAndQueues.Organs;
 import organs.organs.Models.UserTypes.Hospitals;
+import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.OrgansAndQueues.OrgansRepository;
 import organs.organs.Repositories.UserTypes.HospitalsRepository;
 import organs.organs.Repositories.UserTypes.UsersRepository;
@@ -38,16 +39,23 @@ public class AdminsHospitalsService {
             throw new IllegalArgumentException("Hospital With This Name Already Exists!");
         }
 
+        Users user = new Users();
+
+        user.setFullName("Hospitals Owner");
+        user.setPassword(name);
+        user.setRole("HOSPITAL");
+        user.setEmail(name + "@mail.ru");
+
         Hospitals hospital = new Hospitals();
 
         hospital.setName(name);
         hospital.setAddress(address);
         hospital.setSpecializationOrgans(organ);
-        hospital.setCreatorId(USER);
+        hospital.setCreatorId(user);
 
         hospitalsRepository.save(hospital);
 
-        return "You Successfully Created Hospital!";
+        return "You Successfully Created Hospital! \nHospitals Details:\nEmail: " + user.getEmail() + "\nPassword: " + user.getPassword();
     }
 
     public String updateHospital(int hospitalId, String name, String address) {
