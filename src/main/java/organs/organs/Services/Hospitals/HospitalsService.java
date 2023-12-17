@@ -214,8 +214,8 @@ public class HospitalsService {
 
         queuesHospitalsPatientsRepository.deleteAll(allPatientsInTheQueues);
 
-        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You! Make A Decision To Approve Or Reject The Operation In Your Dashboard");
-        emailService.sendCodeToEmail(queuesHospitalsPatients.getPatientId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You. Go And Check It In Your Dashboard!");
+        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Assigned Operation", "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You! Make A Decision To Approve Or Reject The Operation In Your Dashboard");
+        emailService.sendCodeToEmail(queuesHospitalsPatients.getPatientId().getUserId().getEmail(), "Assigned Operation", "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You. Go And Check It In Your Dashboard!");
 
         return "You Successfully Appointed Operation To " + time;
     }
@@ -260,8 +260,8 @@ public class HospitalsService {
 
         hospitalsOperationsRepository.delete(hospitalsOperations);
 
-        emailService.sendCodeToEmail(hospitalsOperations.getDonorId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
-        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
+        emailService.sendCodeToEmail(hospitalsOperations.getDonorId().getUserId().getEmail(), "Canceled Operation", "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
+        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Canceled Operation", "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
 
         return "You Successfully Canceled This Operation!";
     }

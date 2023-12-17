@@ -24,7 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static organs.organs.Services.Authentication.LoginService.EMAIL;
 import static organs.organs.Services.Authentication.LoginService.USER;
 
 @Service
@@ -86,7 +85,7 @@ public class DispensaryService {
 
         dispensaryDonorsRepository.save(lastDispensaryDonor);
 
-        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Assigned You An Appointment At " + time);
+        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Appointment In Dispensary", "Dispensary Assigned You An Appointment At " + time);
 
         return "You Successfully Assigned Appointment For " + donor.getUserId().getFullName() + " At " + time;
     }
@@ -108,7 +107,7 @@ public class DispensaryService {
 
         dispensaryPatientsRepository.save(lastDispensaryPatient);
 
-        emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Assigned You An Appointment At " + time);
+        emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Appointment In Dispensary", "Dispensary Assigned You An Appointment At " + time);
 
         return "You Successfully Assigned Appointment For " + patient.getUserId().getFullName() + " At " + time;
     }
@@ -168,11 +167,11 @@ public class DispensaryService {
 
         if (!isApproved) {
 
-            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Donating Organs!");
+            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Filled Your Medical Card", "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Donating Organs!");
         }
         else {
 
-            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Donating Organs!");
+            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Filled Your Medical Card", "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Donating Organs!");
         }
 
         return "You Successfully Filled Out Donors Information";
@@ -227,11 +226,11 @@ public class DispensaryService {
 
         if (!isApproved) {
 
-            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Receiving Organs!");
+            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Filled Your Medical Card", "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Receiving Organs!");
         }
         else {
 
-            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Receiving Organs!");
+            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Filled Your Medical Card", "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Receiving Organs!");
         }
 
         return "You Successfully Filled Out Patients Information";

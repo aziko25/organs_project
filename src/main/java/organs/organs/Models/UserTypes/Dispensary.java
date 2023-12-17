@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "dispensary")
+@Table(schema = "public", name = "dispensary")
 public class Dispensary {
 
     @Id

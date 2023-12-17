@@ -13,12 +13,12 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     @Async("emailExecutor")
-    public void sendCodeToEmail(String email, String code) {
+    public void sendCodeToEmail(String email, String subject, String code) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject("Your password reset code");
-        message.setText("Your password reset code is " + code);
+        message.setSubject(subject);
+        message.setText(code);
         mailSender.send(message);
     }
 }

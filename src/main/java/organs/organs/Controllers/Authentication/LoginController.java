@@ -37,7 +37,7 @@ public class LoginController {
 
         String code = generateUniqueCode();
 
-        emailService.sendCodeToEmail(user.getEmail(), code);
+        emailService.sendCodeToEmail(user.getEmail(), "Reset Password", "Your Reset Password Code: " + code);
 
         mapOfMailAndCodes.put(user.getEmail(), code);
 

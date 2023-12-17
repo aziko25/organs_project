@@ -13,7 +13,7 @@ import organs.organs.Models.UserTypes.Donors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "donors_organs")
+@Table(schema = "public", name = "donors_organs")
 @IdClass(DonorsOrgansId.class)
 public class DonorsOrgans {
 

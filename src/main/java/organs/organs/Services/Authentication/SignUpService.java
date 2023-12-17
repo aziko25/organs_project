@@ -54,7 +54,7 @@ public class SignUpService {
 
             patientsRepository.save(patient);
 
-            emailService.sendCodeToEmail(user.getEmail(), "Welcome To Our Platform! You Successfully Registered As Patient!");
+            emailService.sendCodeToEmail(user.getEmail(), "Greetings", "Welcome To Our Platform! You Successfully Registered As Patient!");
         }
         else if (role.equalsIgnoreCase("DONOR")) {
 
@@ -64,11 +64,11 @@ public class SignUpService {
 
             donorsRepository.save(donor);
 
-            emailService.sendCodeToEmail(user.getEmail(), "Welcome To Our Platform! You Successfully Registered As Donor!");
+            emailService.sendCodeToEmail(user.getEmail(), "Greetings", "Welcome To Our Platform! You Successfully Registered As Donor!");
         }
         else if (role.equalsIgnoreCase("HOSPITAL")) {
 
-            emailService.sendCodeToEmail(user.getEmail(), "Welcome To Our Platform! You Successfully Registered As Hospital!");
+            emailService.sendCodeToEmail(user.getEmail(), "Greetings", "Welcome To Our Platform! You Successfully Registered As Hospital!");
         }
 
         return "You Successfully Signed Up!";

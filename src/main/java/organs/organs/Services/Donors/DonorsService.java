@@ -141,8 +141,8 @@ public class DonorsService {
 
         hospitalsOperationsRepository.save(hospitalsOperations);
 
-        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Donor Has Rejected To Donate His Organ To Your Operation! You Need To Stand In The Queue Again!");
-        emailService.sendCodeToEmail(hospitalsOperations.getHospitalId().getCreatorId().getEmail(), "Donor Has Rejected To Donate His Organ To Your Operation!");
+        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Rejected Operation", "Donor Has Rejected To Donate His Organ To Your Operation! You Need To Stand In The Queue Again!");
+        emailService.sendCodeToEmail(hospitalsOperations.getHospitalId().getCreatorId().getEmail(), "Rejected Operation", "Donor Has Rejected To Donate His Organ To Your Operation!");
 
         return "You Successfully Sent Your Decision!";
     }
