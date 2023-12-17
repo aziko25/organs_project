@@ -46,6 +46,9 @@ public class AdminsHospitalsService {
         user.setRole("HOSPITAL");
         user.setEmail(name + "@mail.ru");
 
+        usersRepository.save(user);
+
+
         Hospitals hospital = new Hospitals();
 
         hospital.setName(name);

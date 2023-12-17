@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import organs.organs.Models.UserTypes.Dispensary;
 import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.UserTypes.DispensaryRepository;
+import organs.organs.Repositories.UserTypes.UsersRepository;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class AdminsDispensaryService {
 
     private final DispensaryRepository dispensaryRepository;
+    private final UsersRepository usersRepository;
 
     public List<Dispensary> allDispensaries() {
 
@@ -35,6 +37,8 @@ public class AdminsDispensaryService {
         user.setPassword(name);
         user.setRole("DISPENSARY");
         user.setEmail(name + "@mail.ru");
+
+        usersRepository.save(user);
 
         dispensary = new Dispensary();
 
