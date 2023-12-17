@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import organs.organs.Configurations.Mail.EmailService;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryDonors;
 import organs.organs.Models.ManyToMany.HospitalsDonorsOrgans.HospitalsDonorsOrgans;
 import organs.organs.Models.UserTypes.Dispensary;
@@ -35,6 +36,7 @@ public class DonorsService {
     private final HospitalsRepository hospitalsRepository;
     private final HospitalsDonorsOrgansRepository hospitalsDonorsOrgansRepository;
     private final HospitalsOperationsRepository hospitalsOperationsRepository;
+    private final EmailService emailService;
 
     public Donors myDonorInfo() {
 
@@ -138,6 +140,9 @@ public class DonorsService {
         hospitalsOperations.setIsDonorAccepted(decision);
 
         hospitalsOperationsRepository.save(hospitalsOperations);
+
+        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Donor Has Rejected To Donate His Organ To Your Operation! You Need To Stand In The Queue Again!");
+        emailService.sendCodeToEmail(hospitalsOperations.getHospitalId().getCreatorId().getEmail(), "Donor Has Rejected To Donate His Organ To Your Operation!");
 
         return "You Successfully Sent Your Decision!";
     }

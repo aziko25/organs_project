@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import organs.organs.Configurations.Images.FileUploadUtil;
+import organs.organs.Configurations.Mail.EmailService;
 import organs.organs.Models.ManyToMany.HospitalsDonorsOrgans.HospitalsDonorsOrgans;
 import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatients;
 import organs.organs.Models.OrgansAndQueues.Organs;
@@ -39,6 +40,7 @@ public class HospitalsService {
     private final QueuesRepository queuesRepository;
     private final QueuesHospitalsPatientsRepository queuesHospitalsPatientsRepository;
     private final HospitalsOperationsRepository hospitalsOperationsRepository;
+    private final EmailService emailService;
 
     public Hospitals myHospitalInfo() {
 
@@ -212,6 +214,9 @@ public class HospitalsService {
 
         queuesHospitalsPatientsRepository.deleteAll(allPatientsInTheQueues);
 
+        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You! Make A Decision To Approve Or Reject The Operation In Your Dashboard");
+        emailService.sendCodeToEmail(queuesHospitalsPatients.getPatientId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Assigned An Operation To You. Go And Check It In Your Dashboard!");
+
         return "You Successfully Appointed Operation To " + time;
     }
 
@@ -254,6 +259,9 @@ public class HospitalsService {
         HospitalsOperations hospitalsOperations = hospitalsOperationsRepository.findByIdAndHospitalId(operationId, hospital).orElseThrow(() -> new IllegalArgumentException("Operation Not Found"));
 
         hospitalsOperationsRepository.delete(hospitalsOperations);
+
+        emailService.sendCodeToEmail(hospitalsOperations.getDonorId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
+        emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
 
         return "You Successfully Canceled This Operation!";
     }

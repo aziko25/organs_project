@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import organs.organs.Configurations.Mail.EmailService;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryDonors;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryPatients;
 import organs.organs.Models.OrgansAndQueues.Organs;
@@ -37,6 +38,7 @@ public class DispensaryService {
     private final DonorsRepository donorsRepository;
     private final PatientsRepository patientsRepository;
     private final OrgansRepository organsRepository;
+    private final EmailService emailService;
 
     public Dispensary myDispensaryInfo() {
 
@@ -84,6 +86,8 @@ public class DispensaryService {
 
         dispensaryDonorsRepository.save(lastDispensaryDonor);
 
+        emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Assigned You An Appointment At " + time);
+
         return "You Successfully Assigned Appointment For " + donor.getUserId().getFullName() + " At " + time;
     }
 
@@ -103,6 +107,8 @@ public class DispensaryService {
         lastDispensaryPatient.setDate(time);
 
         dispensaryPatientsRepository.save(lastDispensaryPatient);
+
+        emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Assigned You An Appointment At " + time);
 
         return "You Successfully Assigned Appointment For " + patient.getUserId().getFullName() + " At " + time;
     }
@@ -160,6 +166,15 @@ public class DispensaryService {
             throw new IllegalArgumentException("Passport Number Or Pinfl Already Exists!");
         }
 
+        if (!isApproved) {
+
+            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Donating Organs!");
+        }
+        else {
+
+            emailService.sendCodeToEmail(donor.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Donating Organs!");
+        }
+
         return "You Successfully Filled Out Donors Information";
     }
 
@@ -209,6 +224,15 @@ public class DispensaryService {
 
         dispensaryPatientsRepository.save(dispensaryPatients);
         patientsRepository.save(patient);
+
+        if (!isApproved) {
+
+            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Unfortunately, You Are Rejected For Receiving Organs!");
+        }
+        else {
+
+            emailService.sendCodeToEmail(patient.getUserId().getEmail(), "Dispensary Has Filled Your Medical Card. Congratulations, You Are Approved For Receiving Organs!");
+        }
 
         return "You Successfully Filled Out Patients Information";
     }

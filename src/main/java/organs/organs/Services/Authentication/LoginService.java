@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import organs.organs.Configurations.Mail.EmailService;
 import organs.organs.Models.UserTypes.Users;
 import organs.organs.Repositories.UserTypes.UsersRepository;
 
