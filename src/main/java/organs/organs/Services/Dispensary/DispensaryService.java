@@ -87,6 +87,7 @@ public class DispensaryService {
         }
 
         lastDispensaryDonor.setDate(time);
+        lastDispensaryDonor.setIsProcessing(true);
 
         dispensaryDonorsRepository.save(lastDispensaryDonor);
 
@@ -109,6 +110,7 @@ public class DispensaryService {
         }
 
         lastDispensaryPatient.setDate(time);
+        lastDispensaryPatient.setIsProcessing(true);
 
         dispensaryPatientsRepository.save(lastDispensaryPatient);
 
@@ -161,6 +163,7 @@ public class DispensaryService {
             }
 
             dispensaryDonors.setIsActive(false);
+            dispensaryDonors.setIsProcessing(false);
 
             dispensaryDonorsRepository.save(dispensaryDonors);
             donorsRepository.save(donor);
@@ -225,6 +228,7 @@ public class DispensaryService {
         }
 
         dispensaryPatients.setIsActive(false);
+        dispensaryPatients.setIsProcessing(false);
 
         dispensaryPatientsRepository.save(dispensaryPatients);
         patientsRepository.save(patient);
