@@ -39,9 +39,14 @@ public class DispensaryService {
     private final OrgansRepository organsRepository;
     private final EmailService emailService;
 
-    public Dispensary myDispensaryInfo() {
+    /*public Dispensary myDispensaryInfo() {
 
         return dispensaryRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Dispensary"));
+    }*/
+
+    public Dispensary myDispensaryInfo() {
+
+        return dispensaryRepository.findById(1).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Dispensary"));
     }
 
     public String updateDispensaryInfo(String name) {

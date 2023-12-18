@@ -18,7 +18,7 @@ public class DispensaryController {
 
     private final DispensaryService dispensaryService;
 
-    @Authorization(requiredRoles = {"DISPENSARY"})
+    //@Authorization(requiredRoles = {"DISPENSARY"})
     @GetMapping("/myDispensaryInfo")
     public ResponseEntity<?> myDispensaryInfo() {
 
@@ -32,14 +32,14 @@ public class DispensaryController {
         return new ResponseEntity<>(dispensaryService.updateDispensaryInfo(name), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
+    //@Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @GetMapping("/allDispensaryDonors")
     public ResponseEntity<?> allDispensaryDonors() {
 
         return new ResponseEntity<>(dispensaryService.allDispensaryDonors(), HttpStatus.OK);
     }
 
-    @Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
+    //@Authorization(requiredRoles = {"DISPENSARY", "ADMIN"})
     @GetMapping("/allDispensaryPatients")
     public ResponseEntity<?> allDispensaryPatients() {
 
