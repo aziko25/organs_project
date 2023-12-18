@@ -35,9 +35,6 @@ public class Patients {
     private String city;
     private String district;
 
-    @Column(name = "last_received")
-    private LocalDate lastReceived;
-
     @Column(name = "passport_number", unique = true)
     private String passportNumber;
 
@@ -52,12 +49,6 @@ public class Patients {
 
     @Column(name = "rh_factor")
     private String rhFactor;
-
-    @Column(name = "is_smoker")
-    private Boolean isSmoker;
-
-    @Column(name = "is_drinker")
-    private Boolean isDrinker;
 
     @ManyToOne
     @JoinColumn(name = "organ_receives")

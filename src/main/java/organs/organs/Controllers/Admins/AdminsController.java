@@ -23,7 +23,7 @@ public class AdminsController {
 
     // ORGANS
 
-    @Authorization(requiredRoles = {"ADMIN"})
+    //@Authorization(requiredRoles = {"ADMIN"})
     @GetMapping("/organs/allOrgans")
     public ResponseEntity<?> allOrgans() {
 
