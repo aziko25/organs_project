@@ -51,6 +51,21 @@ public class PatientsController {
     }
 
     @Authorization(requiredRoles = {"APPROVED_PATIENT"})
+    @GetMapping("/allHospitalsIApplied")
+    public ResponseEntity<?> allHospitalsIApplied() {
+
+        return ResponseEntity.ok(patientsService.allHospitalsIApplied());
+    }
+
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
+    @GetMapping("/allQueueInThisHospitalIApplied")
+    public ResponseEntity<?> allQueueInThisHospitalIApplied(@RequestParam int hospitalId) {
+
+        return ResponseEntity.ok(patientsService.allQueueInThisHospitalIApplied(hospitalId));
+    }
+
+
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
     @GetMapping("/allMyOperations")
     public ResponseEntity<?> allMyOperations() {
 

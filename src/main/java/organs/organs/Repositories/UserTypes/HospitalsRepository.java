@@ -9,6 +9,7 @@ import organs.organs.Models.UserTypes.Users;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface HospitalsRepository extends JpaRepository<Hospitals, Integer> {
@@ -19,4 +20,6 @@ public interface HospitalsRepository extends JpaRepository<Hospitals, Integer> {
     List<Hospitals> findAllBySpecializationOrgans(Organs specializationOrgans);
 
     Optional<Hospitals> findByIdAndSpecializationOrgans(Integer id, Organs specializationOrgans);
+
+    List<Hospitals> findAllByPatients(Set<Patients> patients);
 }

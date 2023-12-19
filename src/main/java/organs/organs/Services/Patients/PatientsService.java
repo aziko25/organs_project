@@ -133,6 +133,21 @@ public class PatientsService {
         return "You Successfully Applied To " + hospital.getName();
     }
 
+    public List<QueuesHospitalsPatients> allHospitalsIApplied() {
+
+        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient!"));
+
+        return queuesHospitalsPatientsRepository.findAllByPatientId(patient);
+    }
+
+    public List<QueuesHospitalsPatients> allQueueInThisHospitalIApplied(int hospitalId) {
+
+        Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found"));
+        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient!"));
+
+        return queuesHospitalsPatientsRepository.findAllByHospitalId(hospital);
+    }
+
     public List<HospitalsOperations> allMyOperations() {
 
         Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
