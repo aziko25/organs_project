@@ -20,6 +20,4 @@ public interface HospitalsRepository extends JpaRepository<Hospitals, Integer> {
     List<Hospitals> findAllBySpecializationOrgans(Organs specializationOrgans);
 
     Optional<Hospitals> findByIdAndSpecializationOrgans(Integer id, Organs specializationOrgans);
-
-    List<Hospitals> findAllByPatients(Set<Patients> patients);
 }

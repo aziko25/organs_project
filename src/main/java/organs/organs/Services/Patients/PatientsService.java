@@ -1,14 +1,15 @@
 package organs.organs.Services.Patients;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryPatients;
 import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatients;
 import organs.organs.Models.OrgansAndQueues.Queues;
-import organs.organs.Models.UserTypes.*;
+import organs.organs.Models.UserTypes.Dispensary;
+import organs.organs.Models.UserTypes.Hospitals;
+import organs.organs.Models.UserTypes.HospitalsOperations;
+import organs.organs.Models.UserTypes.Patients;
 import organs.organs.Repositories.ManyToMany.DispensaryPatientsRepository;
 import organs.organs.Repositories.ManyToMany.QueuesHospitalsPatientsRepository;
 import organs.organs.Repositories.OrgansAndQueues.QueuesRepository;
@@ -23,7 +24,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static organs.organs.Services.Authentication.LoginService.USER;
-import static organs.organs.Services.Hospitals.HospitalsService.handleFileUpload;
 
 @Service
 @RequiredArgsConstructor
@@ -143,7 +143,6 @@ public class PatientsService {
     public List<QueuesHospitalsPatients> allQueueInThisHospitalIApplied(int hospitalId) {
 
         Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found"));
-        Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient!"));
 
         return queuesHospitalsPatientsRepository.findAllByHospitalId(hospital);
     }
