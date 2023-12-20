@@ -3,9 +3,11 @@ package organs.organs.Services.Authentication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import organs.organs.Configurations.Mail.EmailService;
+import organs.organs.Models.Regions;
 import organs.organs.Models.UserTypes.Donors;
 import organs.organs.Models.UserTypes.Patients;
 import organs.organs.Models.UserTypes.Users;
+import organs.organs.Repositories.RegionsRepository;
 import organs.organs.Repositories.UserTypes.DonorsRepository;
 import organs.organs.Repositories.UserTypes.PatientsRepository;
 import organs.organs.Repositories.UserTypes.UsersRepository;
@@ -18,8 +20,11 @@ public class SignUpService {
     private final DonorsRepository donorsRepository;
     private final PatientsRepository patientsRepository;
     private final EmailService emailService;
+    private final RegionsRepository regionsRepository;
 
-    public String signUp(String fullName, String email, String password, String rePassword, String role) {
+    public String signUp(String fullName, String email, String password, String rePassword, String role, int regionId) {
+
+        Regions region = regionsRepository.findById(regionId).orElseThrow(() -> new IllegalArgumentException("Region Not Found"));
 
         if (!password.equals(rePassword)) {
 
@@ -43,6 +48,7 @@ public class SignUpService {
         user.setEmail(email);
         user.setPassword(password);
         user.setRole(role.toUpperCase());
+        user.setRegionId(region);
 
         usersRepository.save(user);
 

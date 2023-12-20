@@ -10,10 +10,7 @@ import organs.organs.Models.ManyToMany.HospitalsDonorsOrgans.HospitalsDonorsOrga
 import organs.organs.Models.ManyToMany.Queues.QueuesHospitalsPatients;
 import organs.organs.Models.OrgansAndQueues.Organs;
 import organs.organs.Models.OrgansAndQueues.Queues;
-import organs.organs.Models.UserTypes.Donors;
-import organs.organs.Models.UserTypes.Hospitals;
-import organs.organs.Models.UserTypes.HospitalsOperations;
-import organs.organs.Models.UserTypes.Patients;
+import organs.organs.Models.UserTypes.*;
 import organs.organs.Repositories.ManyToMany.HospitalsDonorsOrgansRepository;
 import organs.organs.Repositories.ManyToMany.QueuesHospitalsPatientsRepository;
 import organs.organs.Repositories.OrgansAndQueues.OrgansRepository;
@@ -40,6 +37,7 @@ public class HospitalsService {
     private final QueuesRepository queuesRepository;
     private final QueuesHospitalsPatientsRepository queuesHospitalsPatientsRepository;
     private final HospitalsOperationsRepository hospitalsOperationsRepository;
+    private final DoctorsRepository doctorsRepository;
     private final EmailService emailService;
 
     public Hospitals myHospitalInfo() {
@@ -156,10 +154,67 @@ public class HospitalsService {
         return hospitalsOperationsRepository.findAllByHospitalId(hospital);
     }
 
-    public String appointTransportationOperationByTheQueue(String doctorName, String role, LocalDateTime time, int donorId) {
+    public List<HospitalsDonorsOrgans> allMyDonors() {
+
+        Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
+
+        return hospitalsDonorsOrgansRepository.findAllByHospitalId(hospital);
+    }
+
+    public List<Doctors> allMyDoctors() {
+
+        Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
+
+        return doctorsRepository.findAllByHospitalId(hospital);
+    }
+
+    public String createDoctor(String fullName, String email, String specialization) {
+
+        Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
+
+        Doctors doctor = new Doctors();
+
+        doctor.setFullName(fullName);
+        doctor.setEmail(email);
+        doctor.setSpecialization(specialization);
+        doctor.setHospitalId(hospital);
+
+        doctorsRepository.save(doctor);
+
+        return "You Successfully Created " + fullName + " Doctor!";
+    }
+
+    public String updateDoctor(int doctorId, String fullName, String email, String specialization) {
+
+        Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
+
+        Doctors doctor = doctorsRepository.findByIdAndHospitalId(doctorId, hospital).orElseThrow(() -> new IllegalArgumentException("Doctor Not Found!"));
+
+        if (fullName != null) {
+
+            doctor.setFullName(fullName);
+        }
+
+        if (email != null) {
+
+            doctor.setEmail(email);
+        }
+
+        if (specialization != null) {
+
+            doctor.setSpecialization(specialization);
+        }
+
+        doctorsRepository.save(doctor);
+
+        return "You Successfully Updated Doctor " + fullName;
+    }
+
+    public String appointTransportationOperationByTheQueue(int doctorId, LocalDateTime time, int donorId) {
 
         Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
         Donors donor = donorsRepository.findById(donorId).orElseThrow(() -> new IllegalArgumentException("Donor Does Not Exist!"));
+        Doctors doctor = doctorsRepository.findByIdAndHospitalId(doctorId, hospital).orElseThrow(() -> new IllegalArgumentException("Doctor Not Found!"));
 
         HospitalsDonorsOrgans hospitalsDonorsOrgans = hospitalsDonorsOrgansRepository.findByHospitalIdAndDonorId(hospital, donor)
                 .orElseThrow(() -> new IllegalArgumentException("Donor Not Found In Your Hospital!"));
@@ -171,14 +226,14 @@ public class HospitalsService {
             throw new IllegalArgumentException("Patient In The Queue Not Found!");
         }
 
-        return setOperationProperties(doctorName, role, time, hospital, hospitalsDonorsOrgans.getDonorId(), queuesHospitalsPatients);
+        return setOperationProperties(doctor, time, hospital, hospitalsDonorsOrgans.getDonorId(), queuesHospitalsPatients);
     }
 
-    public String appointOperationToAnyPatient(String doctorName, String role, LocalDateTime time, int patientId, int donorId) {
+    public String appointOperationToAnyPatient(int doctorId, LocalDateTime time, int patientId, int donorId) {
 
         Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
-
         Donors donor = donorsRepository.findById(donorId).orElseThrow(() -> new IllegalArgumentException("Donor Not Found!"));
+        Doctors doctor = doctorsRepository.findByIdAndHospitalId(doctorId, hospital).orElseThrow(() -> new IllegalArgumentException("Doctor Not Found!"));
 
         HospitalsDonorsOrgans hospitalsDonorsOrgans = hospitalsDonorsOrgansRepository.findByHospitalIdAndDonorId(hospital, donor)
                 .orElseThrow(() -> new IllegalArgumentException("Donor Not Found In Your Hospital!"));
@@ -192,10 +247,10 @@ public class HospitalsService {
             throw new IllegalArgumentException("Patient In The Queue Not Found!");
         }
 
-        return setOperationProperties(doctorName, role, time, hospital, hospitalsDonorsOrgans.getDonorId(), queuesHospitalsPatients);
+        return setOperationProperties(doctor, time, hospital, hospitalsDonorsOrgans.getDonorId(), queuesHospitalsPatients);
     }
 
-    private String setOperationProperties(String doctorName, String role, LocalDateTime time, Hospitals hospital,
+    private String setOperationProperties(Doctors doctor, LocalDateTime time, Hospitals hospital,
                                           Donors donor, QueuesHospitalsPatients queuesHospitalsPatients) {
 
         HospitalsOperations hospitalsOperations = new HospitalsOperations();
@@ -204,8 +259,7 @@ public class HospitalsService {
         hospitalsOperations.setPatientId(queuesHospitalsPatients.getPatientId());
         hospitalsOperations.setDonorId(donor);
         hospitalsOperations.setOrganId(donor.getOrganDonates());
-        hospitalsOperations.setDoctorName(doctorName);
-        hospitalsOperations.setDoctorSpecialization(role);
+        hospitalsOperations.setDoctorId(doctor);
         hospitalsOperations.setOperationTime(time);
 
         hospitalsOperationsRepository.save(hospitalsOperations);
@@ -221,7 +275,7 @@ public class HospitalsService {
     }
 
     public String updateOperationProperties(int operationId, Boolean successful, LocalDateTime time,
-                                            String doctorName, String doctorRole) {
+                                            Integer doctorId) {
 
         Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital"));
 
@@ -237,14 +291,11 @@ public class HospitalsService {
             hospitalsOperations.setOperationTime(time);
         }
 
-        if (doctorName != null) {
+        if (doctorId != null) {
 
-            hospitalsOperations.setDoctorName(doctorName);
-        }
+            Doctors doctor = doctorsRepository.findByIdAndHospitalId(doctorId, hospital).orElseThrow(() -> new IllegalArgumentException("Doctor Not Found!"));
 
-        if (doctorRole != null) {
-
-            hospitalsOperations.setDoctorSpecialization(doctorRole);
+            hospitalsOperations.setDoctorId(doctor);
         }
 
         hospitalsOperationsRepository.save(hospitalsOperations);
@@ -264,13 +315,6 @@ public class HospitalsService {
         emailService.sendCodeToEmail(hospitalsOperations.getPatientId().getUserId().getEmail(), "Canceled Operation", "Hospital '" + hospital.getName() + "' Has Canceled Your Operation!");
 
         return "You Successfully Canceled This Operation!";
-    }
-
-    public List<HospitalsDonorsOrgans> allMyDonors() {
-
-        Hospitals hospital = hospitalsRepository.findByCreatorId(USER).orElseThrow(() -> new IllegalArgumentException("You Don't Have A Hospital!"));
-
-        return hospitalsDonorsOrgansRepository.findAllByHospitalId(hospital);
     }
 
     public static String handleFileUpload(String name, MultipartFile multipartFile) {

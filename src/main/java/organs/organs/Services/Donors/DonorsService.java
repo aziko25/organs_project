@@ -99,7 +99,7 @@ public class DonorsService {
 
         Donors donor = donorsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Donor Yet!"));
 
-        return hospitalsRepository.findAllBySpecializationOrgans(donor.getOrganDonates());
+        return hospitalsRepository.findAllBySpecializationOrgansAndCreatorId_RegionId(donor.getOrganDonates(), donor.getUserId().getRegionId());
     }
 
     @Transactional

@@ -5,33 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import organs.organs.Models.Regions;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "public", name = "users")
-public class Users {
+@Table(schema = "public", name = "doctors")
+public class Doctors {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
-    private String email;
-
-    private String password;
-    private String role;
-
     @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "image_link")
-    private String imageLink;
+    private String email;
+    private String specialization;
 
     @ManyToOne
-    @JoinColumn(name = "region_id")
-    private Regions regionId;
+    @JoinColumn(name = "hospital_id")
+    private Hospitals hospitalId;
 }

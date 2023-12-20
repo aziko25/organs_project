@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import organs.organs.Models.OrgansAndQueues.Organs;
+import organs.organs.Models.Regions;
 
 import java.time.LocalDate;
 

@@ -38,11 +38,9 @@ public class HospitalsOperations {
     @JoinColumn(name = "organ_id")
     private Organs organId;
 
-    @Column(name = "doctor_name")
-    private String doctorName;
-
-    @Column(name = "doctor_specialization")
-    private String doctorSpecialization;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctors doctorId;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "operation_time")

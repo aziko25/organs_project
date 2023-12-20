@@ -73,6 +73,28 @@ public class HospitalsController {
     }
 
     @Authorization(requiredRoles = {"HOSPITAL"})
+    @GetMapping("/allMyDoctors")
+    public ResponseEntity<?> allMyDoctors() {
+
+        return ResponseEntity.ok(hospitalsService.allMyDoctors());
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PostMapping("/createMyDoctor")
+    public ResponseEntity<?> createMyDoctor(@RequestParam String fullName, @RequestParam String email, @RequestParam String specialization) {
+
+        return ResponseEntity.ok(hospitalsService.createDoctor(fullName, email, specialization));
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
+    @PutMapping("/updateMyDoctor")
+    public ResponseEntity<?> updateMyDoctor(@RequestParam int doctorId, @RequestParam String fullName,
+                                            @RequestParam String email, @RequestParam String specialization) {
+
+        return ResponseEntity.ok(hospitalsService.updateDoctor(doctorId, fullName, email, specialization));
+    }
+
+    @Authorization(requiredRoles = {"HOSPITAL"})
     @GetMapping("/allMyOperations")
     public ResponseEntity<?> allMyOperations() {
 
@@ -81,18 +103,18 @@ public class HospitalsController {
 
     @Authorization(requiredRoles = {"HOSPITAL"})
     @PostMapping("/appointOperationByTheQueue")
-    public ResponseEntity<?> appointOperationByTheQueue(@RequestParam String doctorName, @RequestParam String doctorRole,
+    public ResponseEntity<?> appointOperationByTheQueue(@RequestParam int doctorId,
                                               @RequestParam LocalDateTime time, @RequestParam int donorId) {
 
-        return new ResponseEntity<>(hospitalsService.appointTransportationOperationByTheQueue(doctorName, doctorRole, time, donorId), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalsService.appointTransportationOperationByTheQueue(doctorId, time, donorId), HttpStatus.OK);
     }
 
     @Authorization(requiredRoles = {"HOSPITAL"})
     @PostMapping("/appointOperationToAnyPatient")
-    public ResponseEntity<?> appointOperationToAnyPatient(@RequestParam String doctorName, @RequestParam String doctorRole,
+    public ResponseEntity<?> appointOperationToAnyPatient(@RequestParam int doctorId,
                                               @RequestParam LocalDateTime time, @RequestParam int patientId, @RequestParam int donorId) {
 
-        return new ResponseEntity<>(hospitalsService.appointOperationToAnyPatient(doctorName, doctorRole, time, patientId, donorId), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalsService.appointOperationToAnyPatient(doctorId, time, patientId, donorId), HttpStatus.OK);
     }
 
     @Authorization(requiredRoles = {"HOSPITAL"})
@@ -100,10 +122,9 @@ public class HospitalsController {
     public ResponseEntity<?> updateOperationProperties(@RequestParam int operationId,
                                                        @RequestParam(required = false) Boolean successful,
                                                        @RequestParam(required = false) LocalDateTime operationTime,
-                                                       @RequestParam(required = false) String doctorName,
-                                                       @RequestParam(required = false) String doctorRole) {
+                                                       @RequestParam(required = false) Integer doctorId) {
 
-        return new ResponseEntity<>(hospitalsService.updateOperationProperties(operationId, successful, operationTime, doctorName, doctorRole), HttpStatus.OK);
+        return new ResponseEntity<>(hospitalsService.updateOperationProperties(operationId, successful, operationTime, doctorId), HttpStatus.OK);
     }
 
     @Authorization(requiredRoles = {"HOSPITAL"})

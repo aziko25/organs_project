@@ -16,8 +16,8 @@ public class SignUpController {
 
     @PostMapping("/signUp")
     public ResponseEntity<?> signUp(@RequestParam String fullName, @RequestParam String email, @RequestParam String password,
-                                    @RequestParam String rePassword, @RequestParam String role) {
+                                    @RequestParam String rePassword, @RequestParam String role, @RequestParam int regionId) {
 
-        return new ResponseEntity<>(signUpService.signUp(fullName, email, password, rePassword, role), HttpStatus.OK);
+        return new ResponseEntity<>(signUpService.signUp(fullName, email, password, rePassword, role, regionId), HttpStatus.OK);
     }
 }

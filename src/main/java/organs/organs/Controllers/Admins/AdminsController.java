@@ -20,6 +20,29 @@ public class AdminsController {
     private final AdminsDonorsService adminsDonorsService;
     private final AdminsPatientsService adminsPatientsService;
     private final AdminsOrgansService adminsOrgansService;
+    private final AdminsRegionsService adminsRegionsService;
+
+    // REGIONS
+
+    @GetMapping("/regions/allRegions")
+    public ResponseEntity<?> allRegions() {
+
+        return ResponseEntity.ok(adminsRegionsService.allRegions());
+    }
+
+    @Authorization(requiredRoles = {"ADMIN"})
+    @PostMapping("/regions/createRegion")
+    public ResponseEntity<?> createRegion(@RequestParam String name) {
+
+        return ResponseEntity.ok(adminsRegionsService.createRegion(name));
+    }
+
+    @Authorization(requiredRoles = {"ADMIN"})
+    @PutMapping("/regions/updateRegion")
+    public ResponseEntity<?> updateRegion(@RequestParam int regionId, @RequestParam String name) {
+
+        return ResponseEntity.ok(adminsRegionsService.updateRegion(regionId, name));
+    }
 
     // ORGANS
 

@@ -97,7 +97,7 @@ public class PatientsService {
 
         Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient Yet!"));
 
-        return hospitalsRepository.findAllBySpecializationOrgans(patient.getOrganReceives());
+        return hospitalsRepository.findAllBySpecializationOrgansAndCreatorId_RegionId(patient.getOrganReceives(), patient.getUserId().getRegionId());
     }
 
     @Transactional

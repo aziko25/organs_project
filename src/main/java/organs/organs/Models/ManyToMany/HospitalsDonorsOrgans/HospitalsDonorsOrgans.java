@@ -30,7 +30,7 @@ public class HospitalsDonorsOrgans {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "organ_id", unique = true)
+    @JoinColumn(name = "organ_id")
     private Organs organId;
 
     private Double price;
