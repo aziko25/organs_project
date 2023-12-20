@@ -58,6 +58,13 @@ public class PatientsController {
     }
 
     @Authorization(requiredRoles = {"APPROVED_PATIENT"})
+    @PostMapping("/registerInQueue")
+    public ResponseEntity<?> registerInQueue(@RequestParam int hospitalId) {
+
+        return ResponseEntity.ok(patientsService.registerInQueue(hospitalId));
+    }
+
+    @Authorization(requiredRoles = {"APPROVED_PATIENT"})
     @GetMapping("/allQueueInThisHospitalIApplied")
     public ResponseEntity<?> allQueueInThisHospitalIApplied(@RequestParam int hospitalId) {
 

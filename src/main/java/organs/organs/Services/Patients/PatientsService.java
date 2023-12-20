@@ -1,6 +1,7 @@
 package organs.organs.Services.Patients;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import organs.organs.Models.ManyToMany.Dispensary.DispensaryPatients;
@@ -131,6 +132,35 @@ public class PatientsService {
         queuesHospitalsPatientsRepository.save(queuesHospitalsPatients);
 
         return "You Successfully Applied To " + hospital.getName();
+    }
+
+    public String registerInQueue(int hospitalId) {
+
+        try {
+
+            Patients patient = patientsRepository.findByUserId(USER).orElseThrow(() -> new IllegalArgumentException("You Are Not A Patient"));
+            Hospitals hospital = hospitalsRepository.findById(hospitalId).orElseThrow(() -> new IllegalArgumentException("Hospital Not Found"));
+            Queues existingHospitalQueue = queuesRepository.findByHospitalId(hospital);
+
+            if (existingHospitalQueue == null) {
+
+                throw new IllegalArgumentException("Hospital Didn't Create His Queue!");
+            }
+
+            QueuesHospitalsPatients queuesHospitalsPatients = new QueuesHospitalsPatients();
+
+            queuesHospitalsPatients.setHospitalId(hospital);
+            queuesHospitalsPatients.setQueueId(existingHospitalQueue);
+            queuesHospitalsPatients.setPatientId(patient);
+
+            queuesHospitalsPatientsRepository.save(queuesHospitalsPatients);
+
+            return "You Successfully Registered In Queue!";
+        }
+        catch (DataIntegrityViolationException e) {
+
+            throw new IllegalArgumentException("You Are Already In A Queue!");
+        }
     }
 
     public List<QueuesHospitalsPatients> allHospitalsIApplied() {
