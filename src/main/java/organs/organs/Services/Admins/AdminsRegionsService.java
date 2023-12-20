@@ -2,7 +2,6 @@ package organs.organs.Services.Admins;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import organs.organs.Models.Regions;
@@ -18,7 +17,7 @@ public class AdminsRegionsService {
 
     public List<Regions> allRegions() {
 
-        return regionsRepository.findAll(Sort.by("name"));
+        return regionsRepository.findAll(Sort.by("name").ascending());
     }
 
     public String createRegion(String name) {

@@ -28,4 +28,11 @@ public class UsersController {
 
         return ResponseEntity.ok(usersService.userUploadPhoto(photo));
     }
+
+    @Authorization(requiredRoles = {"ADMIN", "DONOR", "APPROVED_DONOR", "PATIENT", "APPROVED_PATIENT", "DISPENSARY", "HOSPITAL"})
+    @PutMapping("/changeRegion")
+    public ResponseEntity<?> changeMyRegion(@RequestParam Integer regionId) {
+
+        return ResponseEntity.ok(usersService.userChangeRegion(regionId));
+    }
 }

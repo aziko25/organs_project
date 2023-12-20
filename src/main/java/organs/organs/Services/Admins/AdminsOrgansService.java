@@ -16,7 +16,7 @@ public class AdminsOrgansService {
 
     public List<Organs> allOrgans() {
 
-        return organsRepository.findAll(Sort.by("id"));
+        return organsRepository.findAll(Sort.by("name"));
     }
 
     public String createOrgan(String name) {
