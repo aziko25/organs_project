@@ -72,6 +72,6 @@ public class DbDataInfoControllers {
     @GetMapping("/allHospitals")
     public ResponseEntity<?> allHospitals() {
 
-        return ResponseEntity.ok(usersRepository.findAll());
+        return ResponseEntity.ok(usersRepository.findAllByRole("HOSPITAL"));
     }
 }
